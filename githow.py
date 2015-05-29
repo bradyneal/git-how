@@ -5,9 +5,12 @@ from sys import argv
 
 DESCRIPTION = "Provides information regarding how to use git in specific ways"
 PROGRAM_NAME = "githow"
-UNDO_FILENAME = "undo_help"
-CONFIG_FILENAME = "config_help"
-SHORTHAND_FILENAME = "shorthand_help"
+
+FILE_FOLDER = "help_files/"
+UNDO_FILENAME = "undo"
+CONFIG_FILENAME = "config"
+CREATE_FILENAME = "create"
+SHORTHAND_FILENAME = "shorthand"
 FILENAMES = [UNDO_FILENAME, CONFIG_FILENAME, SHORTHAND_FILENAME]
 FILENAME_TO_HEADER = {
     UNDO_FILENAME : "UNDOING THINGS:",
@@ -24,7 +27,7 @@ def default():
 
 def print_file(filename):
     """Print the file header and the contents of the file."""
-    with open(filename, 'r') as f:
+    with open(FILE_FOLDER + filename, 'r') as f:
         print(FILENAME_TO_HEADER[filename])
         print(f.read())
 

@@ -1,0 +1,3 @@
+HEAD - alias for current commit (can be used in place of [hash])
+HEAD^ - back one commit
+HEAD~3 - back 3 commits
