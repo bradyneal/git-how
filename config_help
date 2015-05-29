@@ -1,0 +1,2 @@
+Set name (not related to GitHub) - git config --global user.name "[full name]"
+Set email (attached to GitHub) - git config --global user.email "[email address]"
