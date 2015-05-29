@@ -1,7 +1,0 @@
-Get old versions - git checkout [hash]
-Return to latest version - git checkout [branch]
-Undo local changes (before staging) - git checkout [file]
-Undo staged changes (before committing) - git reset HEAD [file]
-Undo committed changes - git revert [hash]
-Remove commits from a branch - git reset --hard [hash]
-Amend commits - git commit --amend
