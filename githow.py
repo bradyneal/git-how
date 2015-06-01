@@ -22,7 +22,7 @@ SUBPARSER_TITLE = "subcommands"
 SUBPARSER_DESC = "Allow reading of and appending to corresponding help files"
 SUBPARSER_HELP = "read usage: <subcommand>; " \
                  "edit usage: <subcommand> -a [new help message]"
-SUBPARSER_APPEND_HELP = "append to help file; usage: <subcommand> -a [new help message]"
+SUBPARSER_APPEND_HELP = "append to help file"
 
 FILE_FOLDER = "help_files/"
 UNDO_FILENAME = "undo"
@@ -55,24 +55,13 @@ def print_file(filename):
 def append_file(filename, message):
     """Append the message to the end of the file."""
     with open(FILE_FOLDER + filename, 'a') as f:
-        pass
+        print('appending message: "' + " ".join(message) + '"'
+              + " to " + filename + " file")
         # f.write(message)
 
 
-def get_args_message(args):
-    # i = max(last_index(argv, "-a"), last_index(argv, "--append"), last_index())
-    print(args)
-    # need to figuer out how the keywords/filename stuff will work out
-    # probably can all be put into an array
-
-
-def last_index(l, x):
-    for i, e in enumerate(reversed(l)):
-        if e == x:
-            return len(l) - 1 - i
-
-
 def add_subparsers(parser):
+    """Add all of the subcommand subparsers."""
     subparsers = parser.add_subparsers(title=SUBPARSER_TITLE,
                                        description=SUBPARSER_DESC,
                                        help=SUBPARSER_HELP)
@@ -81,25 +70,14 @@ def add_subparsers(parser):
         subparser = subparsers.add_parser(subcommand,
                                           help=SUMCOMMAND_TO_HELP[subcommand])
         subparser.set_defaults(filename=subcommand)
-        subparser.add_argument("-a", "--append", action="store_true",
-                               help=SUBPARSER_APPEND_HELP)
+        subparser.add_argument("-a", "--append", default=False, nargs="+",
+                               dest="message", help=SUBPARSER_APPEND_HELP)
 
 
-def parse_args():
-    """Parse the command-line arguments and return the result"""
+def parse_args(args):
+    """Parse the command-line arguments and return the result."""
     parser = ArgumentParser(description=TOOL_DESC, prog=TOOL_NAME)
-    parser.add_argument("-a", "--append", action='store_true',
-                        help=APPEND_HELP)
-
     add_subparsers(parser)
-
-    args = parser.parse_args()
-    if "-a" in argv or "--append" in argv:
-        # append_file(args.filename, get_args_message(args))
-        print("appended to " + args.filename + " file")
-    else:
-        print_file(args.filename)
-
     return parser.parse_args()
 
 
@@ -107,4 +85,8 @@ if __name__ == '__main__':
     if len(argv) == 1:  # no command line arguments
         default()
     else:
-        parse_args()
+        parsed = parse_args(argv)
+        if parsed.message:
+            append_file(parsed.filename, parsed.message)
+        else:
+            print_file(parsed.filename)
