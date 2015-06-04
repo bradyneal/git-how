@@ -11,12 +11,9 @@ SUBCOMMANDS = ["config", "undo", "create", "shorthand"]
 SUMCOMMAND_TO_HELP = {
     "config": "git configuration",
     "undo": "undoing things in git",
-    "create": "temp",
-    "shorthand": "temp"
+    "create": "starting new projects in git",
+    "shorthand": "useful git shorthand"
 }
-
-APPEND_ARGS = ["-a", "--append"]
-APPEND_HELP = "Append to end of file"
 
 SUBPARSER_TITLE = "subcommands"
 SUBPARSER_DESC = "Allow reading of and appending to corresponding help files"
@@ -25,22 +22,12 @@ SUBPARSER_HELP = "read usage: <subcommand>; " \
 SUBPARSER_APPEND_HELP = "append to help file"
 
 FILE_FOLDER = "help_files/"
-UNDO_FILENAME = "undo"
-CONFIG_FILENAME = "config"
-CREATE_FILENAME = "create"
-SHORTHAND_FILENAME = "shorthand"
-FILENAMES = [UNDO_FILENAME, CONFIG_FILENAME, SHORTHAND_FILENAME]
-FILENAME_TO_HEADER = {
-    UNDO_FILENAME: "UNDOING THINGS:",
-    CONFIG_FILENAME: "EDITING CONFIG FILE:",
-    SHORTHAND_FILENAME: "USEFUL SHORTHAND:"
-}
 
 
 def default():
     """Print the full git help text."""
     print()
-    for filename in FILENAMES:
+    for filename in SUBCOMMANDS:
         print_file(filename)
         print()
 
@@ -48,7 +35,6 @@ def default():
 def print_file(filename):
     """Print the file header and the contents of the file."""
     with open(FILE_FOLDER + filename, 'r') as f:
-        print(FILENAME_TO_HEADER[filename])
         print(f.read())
 
 
@@ -78,14 +64,14 @@ def parse_args(args):
     """Parse the command-line arguments and return the result."""
     parser = ArgumentParser(description=TOOL_DESC, prog=TOOL_NAME)
     add_subparsers(parser)
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 if __name__ == '__main__':
     if len(argv) == 1:  # no command line arguments
         default()
     else:
-        parsed = parse_args(argv)
+        parsed = parse_args(argv[1:])
         if parsed.message:
             append_file(parsed.filename, parsed.message)
         else:
