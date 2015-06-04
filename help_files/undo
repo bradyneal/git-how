@@ -1,3 +1,4 @@
+UNDOING THINGS:
 Get old versions - git checkout [hash]
 Return to latest version - git checkout [branch]
 Undo local changes (before staging) - git checkout [file]
