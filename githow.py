@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 from sys import argv
+from os.path import join, abspath
 
 TOOL_DESC = "Provides information regarding how to use git in specific " \
             "ways and allows user to easily add to that information"
@@ -34,16 +35,21 @@ def default():
 
 def print_file(filename):
     """Print the file header and the contents of the file."""
-    with open(FILE_FOLDER + filename, 'r') as f:
+    with open(build_path(filename), 'r') as f:
         print(f.read())
 
 
 def append_file(filename, message):
     """Append the message to the end of the file."""
-    with open(FILE_FOLDER + filename, 'a') as f:
+    with open(build_path(filename), 'a') as f:
         print('appending message: "' + " ".join(message) + '"'
               + " to " + filename + " file")
         # f.write(message)
+
+
+def build_path(help_file):
+    """Build the absolute path to the help file."""
+    return abspath(join(FILE_FOLDER, help_file))
 
 
 def add_subparsers(parser):
