@@ -44,7 +44,7 @@ def append_file(filename, message):
     with open(build_path(filename), 'a') as f:
         print('appending message: "' + " ".join(message) + '"'
               + " to " + filename + " file")
-        # f.write(message)
+        # f.write(" ".join(message))
 
 
 def build_path(help_file):
