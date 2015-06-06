@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 from argparse import ArgumentParser
 from sys import argv
@@ -27,10 +27,10 @@ FILE_FOLDER = "help_files/"
 
 def default():
     """Print the full git help text."""
-    print()
+    print("")
     for filename in SUBCOMMANDS:
         print_file(filename)
-        print()
+        print("")
 
 
 def print_file(filename):
