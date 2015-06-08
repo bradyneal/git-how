@@ -3,6 +3,8 @@
 from argparse import ArgumentParser
 from sys import argv
 from os.path import join, abspath
+from builtins import input
+
 
 TOOL_DESC = "Provides information regarding how to use git in specific " \
             "ways and allows user to easily add to that information"
@@ -30,7 +32,6 @@ def default():
     print("")
     for filename in SUBCOMMANDS:
         print_file(filename)
-        print("")
 
 
 def print_file(filename):
@@ -39,12 +40,34 @@ def print_file(filename):
         print(f.read())
 
 
-def append_file(filename, message):
+def append_to_help_file(filename, message):
     """Append the message to the end of the file."""
-    with open(build_path(filename), 'a') as f:
-        print('appending message: "' + " ".join(message) + '"'
-              + " to " + filename + " file")
-        # f.write(" ".join(message))
+    message = " ".join(message)
+    confirmed = None
+    while confirmed is None:
+        confirmed = process_yes_no_response(input(
+            'Are you sure you want to append "' + message +
+            '" to the ' + filename + ' file? (y/n): '))
+    if confirmed:
+        with open(build_path(filename), 'a') as f:
+            f.write(message + "\n")
+            print('appended "' + message + '"' +
+                  " to " + filename + " file")
+
+
+def process_yes_no_response(response):
+    """
+    Return True if the response is affirmative,
+    False if the response is negative,
+    or None if the response is neither affirmative nor negative.
+    """
+    response = response.lower()
+    affirmative = ["yes", "y"]
+    negative = ["no", "n"]
+    if response in affirmative:
+        return True
+    if response in negative:
+        return False
 
 
 def build_path(help_file):
@@ -79,6 +102,6 @@ if __name__ == '__main__':
     else:
         parsed = parse_args(argv[1:])
         if parsed.message:
-            append_file(parsed.filename, parsed.message)
+            append_to_help_file(parsed.filename, parsed.message)
         else:
             print_file(parsed.filename)
