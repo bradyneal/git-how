@@ -4,8 +4,9 @@ from githow import parse_args
 
 class GithowTests(unittest.TestCase):
     
-    def get_expected_dict(self, subcommand, message=False):
+    def get_expected_dict(self, subcommand, print_all=False, message=False):
         return {
+            "all": print_all,
             "filename": subcommand,
             "message": message
         }
@@ -31,12 +32,12 @@ class GithowTests(unittest.TestCase):
 
     def test_parse_args_append_string_message(self):
         self.assertDictEqual(
-            self.get_expected_dict("config", ["test message"]),
+            self.get_expected_dict("config", message=["test message"]),
             vars(parse_args(["config", "-a" "test message"])))
 
     def test_parse_args_append_bare_message(self):
         self.assertDictEqual(
-            self.get_expected_dict("config", ["test", "message"]),
+            self.get_expected_dict("config", message=["test", "message"]),
             vars(parse_args(["config", "-a", "test", "message"])))
 
 

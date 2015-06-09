@@ -3,7 +3,6 @@
 from argparse import ArgumentParser
 from sys import argv, exit
 from os.path import join, abspath
-from builtins import input
 
 
 TOOL_DESC = "Provides information regarding how to use git in specific " \
@@ -92,16 +91,23 @@ def add_subparsers(parser):
 def parse_args(args):
     """Parse the command-line arguments and return the result."""
     parser = ArgumentParser(description=TOOL_DESC, prog=TOOL_NAME)
+    parser.add_argument("-a", "--all", action='store_true',
+                        help="show all git help files")
     add_subparsers(parser)
+
+    # defaults to help message
     if len(args) == 0:
         parser.print_help()
         exit(0)
+
     return parser.parse_args(args)
 
 
 if __name__ == '__main__':
     parsed = parse_args(argv[1:])
-    if parsed.message:
+    if parsed.all:
+        print_all()
+    elif parsed.message:
         append_to_help_file(parsed.filename, parsed.message)
     else:
         print_file(parsed.filename)
