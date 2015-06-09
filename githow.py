@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from argparse import ArgumentParser
-from sys import argv
+from sys import argv, exit
 from os.path import join, abspath
 from builtins import input
 
@@ -27,7 +27,7 @@ SUBPARSER_APPEND_HELP = "append to help file"
 FILE_FOLDER = "help_files/"
 
 
-def default():
+def print_all():
     """Print the full git help text."""
     print("")
     for filename in SUBCOMMANDS:
@@ -93,15 +93,15 @@ def parse_args(args):
     """Parse the command-line arguments and return the result."""
     parser = ArgumentParser(description=TOOL_DESC, prog=TOOL_NAME)
     add_subparsers(parser)
+    if len(args) == 0:
+        parser.print_help()
+        exit(0)
     return parser.parse_args(args)
 
 
 if __name__ == '__main__':
-    if len(argv) == 1:  # no command line arguments
-        default()
+    parsed = parse_args(argv[1:])
+    if parsed.message:
+        append_to_help_file(parsed.filename, parsed.message)
     else:
-        parsed = parse_args(argv[1:])
-        if parsed.message:
-            append_to_help_file(parsed.filename, parsed.message)
-        else:
-            print_file(parsed.filename)
+        print_file(parsed.filename)
