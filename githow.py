@@ -84,7 +84,7 @@ def add_subparsers(parser):
         subparser = subparsers.add_parser(subcommand,
                                           help=SUMCOMMAND_TO_HELP[subcommand])
         subparser.set_defaults(filename=subcommand)
-        subparser.add_argument("-a", "--append", default=False, nargs="+",
+        subparser.add_argument("-a", "--append", nargs="+",
                                dest="message", help=SUBPARSER_APPEND_HELP)
 
 
@@ -100,14 +100,14 @@ def parse_args(args):
         parser.print_help()
         exit(0)
 
-    return parser.parse_args(args)
+    return vars(parser.parse_args(args))
 
 
 if __name__ == '__main__':
     parsed = parse_args(argv[1:])
-    if parsed.all:
+    if parsed['all']:
         print_all()
-    elif parsed.message:
-        append_to_help_file(parsed.filename, parsed.message)
+    elif parsed['message']:
+        append_to_help_file(parsed['filename'], parsed['message'])
     else:
-        print_file(parsed.filename)
+        print_file(parsed['filename'])
