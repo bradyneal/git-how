@@ -9,12 +9,18 @@ TOOL_DESC = "Provides information regarding how to use git in specific " \
             "ways and allows user to easily add to that information"
 TOOL_NAME = "githow"
 
-SUBCOMMANDS = ["config", "undo", "create", "shorthand"]
+SUBCOMMANDS = ["branching", "config", "create", "github",
+               "history", "shorthand", "stash", "undo", "unix"]
 SUMCOMMAND_TO_HELP = {
+    "branching": "branch and merge",
     "config": "git configuration",
-    "undo": "undoing things in git",
     "create": "starting new projects in git",
-    "shorthand": "useful git shorthand"
+    "github": "syncing with github",
+    "history": "see past changes",
+    "shorthand": "useful git shorthand",
+    "stash": "storing local changes temporarily",
+    "undo": "undoing things in git",
+    "unix": "unix commands in git"
 }
 
 SUBPARSER_TITLE = "subcommands"

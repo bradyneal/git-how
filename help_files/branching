@@ -1,0 +1,6 @@
+BRANCHING:
+List all local branches - git branch
+Create new branch - git branch [branch]
+Switch to branch - git checkout [branch]
+Combine specified branches history into current branch - git merge [branch]
+Delete branch - git branch -d [branch]

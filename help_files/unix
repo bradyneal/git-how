@@ -1,0 +1,4 @@
+UNIX COMMANDS:
+Delete file and stage deletion - git rm [file]
+Remove file from version control but preserve the file locally - git rm --cached [file]
+Rename/move file and stage the change - git mv [file-path] [target-path]

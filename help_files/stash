@@ -1,0 +1,6 @@
+STASH:
+Temporarily store all modified tracked files - git stash
+Restore the most recently stashed files - git stash pop
+List all stashed changesets - git stash list
+Discard the most recently stashed changeset - git stash drop
+Discard all stashes - git stash clear

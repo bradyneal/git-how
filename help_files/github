@@ -1,0 +1,3 @@
+GITHUB RELATED STUFF:
+Publish local commits - git push [alias] [branch] (usually default to: alias=origin, branch=master)
+Sycronize with GitHub - git pull (same as: git fetch; git merge)

@@ -1,0 +1,5 @@
+HISTORY:
+Show all history - git log --all
+Show history for a specific file - git log -p [file]
+Show who changed what and when - git blame [file]
+Show differences between branches - [branch1] [branch2]
