@@ -2,7 +2,7 @@
 
 from argparse import ArgumentParser
 from sys import argv, exit
-from os.path import join, abspath
+from os.path import join
 import json
 
 TOOL_DESC = "Provides information regarding how to use git in specific " \
@@ -18,7 +18,9 @@ SUBPARSER_HELP = "read usage: <subcommand>; " \
                  "edit usage: <subcommand> -a [new help message]"
 SUBPARSER_APPEND_HELP = "append to help file"
 
-FILE_FOLDER = "help_files/"
+HELP_FOLDER = "help_files/"
+# change this
+PATH_TO_APP = "/Users/brady/RC/git-how"
 SUBCOMMANDS_FILE = "subcommands.json"
 
 subcommand_to_help = {}
@@ -32,8 +34,8 @@ def print_all():
 
 
 def print_file(filename):
-    """Print the file header and the contents of the file."""
-    with open(build_path(filename), 'r') as f:
+    """Print the file header and the contents of the help file."""
+    with open(build_help_path(filename), 'r') as f:
         print(f.read())
 
 
@@ -46,7 +48,7 @@ def append_to_help_file(filename, message):
             'Are you sure you want to append "' + message +
             '" to the ' + filename + ' file? (y/n): '))
     if confirmed:
-        with open(build_path(filename), 'a') as f:
+        with open(build_help_path(filename), 'a') as f:
             f.write(message + "\n")
             print('appended "' + message + '"' +
                   " to " + filename + " file")
@@ -67,9 +69,14 @@ def process_yes_no_response(response):
         return False
 
 
-def build_path(help_file):
-    """Build the absolute path to the help file."""
-    return abspath(join(FILE_FOLDER, help_file))
+def build_path(relative_path):
+    """Build the absolute path to the file in the git-how folder."""
+    return join(PATH_TO_APP, relative_path)
+
+
+def build_help_path(help_file):
+    """Build the absolute path to the specified help file."""
+    return build_path(join(HELP_FOLDER, help_file))
 
 
 def add_subparsers(parser):
@@ -106,7 +113,7 @@ def parse_args(args):
 def load_subcommands():
     """Load the subcommands and help messages from a json."""
     global subcommand_to_help
-    with open(SUBCOMMANDS_FILE) as f:
+    with open(build_path(SUBCOMMANDS_FILE)) as f:
         subcommand_to_help = json.load(f)
 
 
@@ -116,8 +123,8 @@ def add_subcommand(subcommand, help_message):
     add the subcommand and help message to the subcommands json.
     """
     subcommand_to_help[subcommand] = help_message
-    open(build_path(subcommand), 'a').close()
-    with open(SUBCOMMANDS_FILE, 'w') as f:
+    open(build_help_path(subcommand), 'a').close()
+    with open(build_path(SUBCOMMANDS_FILE), 'w') as f:
         f.write(json.dumps(subcommand_to_help, sort_keys=True,
                            indent=4, separators=(',', ': ')))
 
