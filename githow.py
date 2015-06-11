@@ -78,7 +78,7 @@ def add_subparsers(parser):
                                        description=SUBPARSER_DESC,
                                        help=SUBPARSER_HELP)
 
-    for subcommand, help_message in subcommand_to_help.items():
+    for subcommand, help_message in sorted(subcommand_to_help.items()):
         subparser = subparsers.add_parser(subcommand, help=help_message)
         subparser.set_defaults(filename=subcommand)
         subparser.add_argument("-a", "--append", nargs="+",
