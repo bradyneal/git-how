@@ -1,0 +1,11 @@
+{
+    "branching": "branch and merge",
+    "config": "git configuration",
+    "create": "starting new projects in git",
+    "github": "syncing with github",
+    "history": "see past changes",
+    "shorthand": "useful git shorthand",
+    "stash": "storing local changes temporarily",
+    "undo": "undoing things in git",
+	"unix": "unix commands in git"
+}

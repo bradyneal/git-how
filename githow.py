@@ -3,7 +3,7 @@
 from argparse import ArgumentParser
 from sys import argv, exit
 from os.path import join, abspath
-
+import json
 
 TOOL_DESC = "Provides information regarding how to use git in specific " \
             "ways and allows user to easily add to that information"
@@ -11,17 +11,6 @@ TOOL_NAME = "githow"
 
 SUBCOMMANDS = ["branching", "config", "create", "github",
                "history", "shorthand", "stash", "undo", "unix"]
-SUMCOMMAND_TO_HELP = {
-    "branching": "branch and merge",
-    "config": "git configuration",
-    "create": "starting new projects in git",
-    "github": "syncing with github",
-    "history": "see past changes",
-    "shorthand": "useful git shorthand",
-    "stash": "storing local changes temporarily",
-    "undo": "undoing things in git",
-    "unix": "unix commands in git"
-}
 
 SUBPARSER_TITLE = "subcommands"
 SUBPARSER_DESC = "Allow reading of and appending to corresponding help files"
@@ -30,12 +19,15 @@ SUBPARSER_HELP = "read usage: <subcommand>; " \
 SUBPARSER_APPEND_HELP = "append to help file"
 
 FILE_FOLDER = "help_files/"
+SUBCOMMANDS_FILE = "subcommands.json"
+
+subcommand_to_help = {}
 
 
 def print_all():
     """Print the full git help text."""
     print("")
-    for filename in SUBCOMMANDS:
+    for filename in subcommand_to_help.keys():
         print_file(filename)
 
 
@@ -86,9 +78,8 @@ def add_subparsers(parser):
                                        description=SUBPARSER_DESC,
                                        help=SUBPARSER_HELP)
 
-    for subcommand in SUBCOMMANDS:
-        subparser = subparsers.add_parser(subcommand,
-                                          help=SUMCOMMAND_TO_HELP[subcommand])
+    for subcommand, help_message in subcommand_to_help.items():
+        subparser = subparsers.add_parser(subcommand, help=help_message)
         subparser.set_defaults(filename=subcommand)
         subparser.add_argument("-a", "--append", nargs="+",
                                dest="message", help=SUBPARSER_APPEND_HELP)
@@ -109,7 +100,15 @@ def parse_args(args):
     return vars(parser.parse_args(args))
 
 
+def load_subcommands():
+    """Load the subcommands and help messages from a json."""
+    global subcommand_to_help
+    with open(SUBCOMMANDS_FILE) as f:
+        subcommand_to_help = json.load(f)
+
+
 if __name__ == '__main__':
+    load_subcommands()
     parsed = parse_args(argv[1:])
     if parsed['all']:
         print_all()
