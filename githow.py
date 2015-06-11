@@ -90,6 +90,9 @@ def parse_args(args):
     parser = ArgumentParser(description=TOOL_DESC, prog=TOOL_NAME)
     parser.add_argument("-a", "--all", action='store_true',
                         help="show all git help files")
+    parser.add_argument("-n", "--new", nargs=2,
+                        metavar=("SUBCOMMAND", "HELP_MESSAGE"),
+                        help="add a new subcommand")
     add_subparsers(parser)
 
     # defaults to help message
@@ -107,11 +110,25 @@ def load_subcommands():
         subcommand_to_help = json.load(f)
 
 
+def add_subcommand(subcommand, help_message):
+    """
+    Create the new subcommand file, and
+    add the subcommand and help message to the subcommands json.
+    """
+    subcommand_to_help[subcommand] = help_message
+    open(build_path(subcommand), 'a').close()
+    with open(SUBCOMMANDS_FILE, 'w') as f:
+        f.write(json.dumps(subcommand_to_help, sort_keys=True,
+                           indent=4, separators=(',', ': ')))
+
+
 if __name__ == '__main__':
     load_subcommands()
     parsed = parse_args(argv[1:])
     if parsed['all']:
         print_all()
+    elif parsed['new']:
+        add_subcommand(*parsed['new'])
     elif parsed['message']:
         append_to_help_file(parsed['filename'], parsed['message'])
     else:
